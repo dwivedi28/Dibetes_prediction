@@ -6,7 +6,7 @@ import pickle
 application = Flask(__name__)
 app = application
 # Import ridge regression model and standard scaler pickle
-logistic_model = pickle.load(open('models/model.pkl', 'rb'))
+classifier_model = pickle.load(open('models/classifier.pkl', 'rb'))
 standard_scaler = pickle.load(open('models/scaler.pkl', 'rb'))
 @app.route("/", methods=["GET", "POST"])
 def predict_datapoint():
@@ -22,7 +22,7 @@ def predict_datapoint():
         Age = float(request.form.get('Age'))
         
         new_data_scaled = standard_scaler.transform([[Pregnancies,Glucose,BloodPressure,SkinThickness,Insulin,BMI,DiabetesPedigreeFunction,Age]])
-        predict = logistic_model.predict(new_data_scaled)
+        predict = classifier_model.predict(new_data_scaled)
         if predict[0] ==1:
          result= 'Diabetic'
         else:
